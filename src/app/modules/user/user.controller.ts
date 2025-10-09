@@ -3,11 +3,8 @@ import catchAsync from "../../shared/catchAsync";
 import sendResponse from "../../shared/sendResponse";
 import { UserService } from "./user.service";
 
-
 const createPatient = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.createPatient(req.body);
-  console.log(req.body);
-  console.log("result", result);
 
   sendResponse(res, {
     statusCode: 201,

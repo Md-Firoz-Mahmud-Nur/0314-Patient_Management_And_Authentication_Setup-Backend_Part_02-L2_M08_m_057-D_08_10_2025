@@ -1,15 +1,15 @@
 import bcrypt from "bcryptjs";
-import prisma from "../../shared/prisma";
+import { prisma } from "../../shared/prisma";
 import { createPatientInput } from "./user.interface";
 
 const createPatient = async (payload: createPatientInput) => {
-  const hashedPassword = await bcrypt.hash(payload.password, 10);
+  const hashPassword = await bcrypt.hash(payload.password, 10);
 
-  const result = await prisma.$transaction(async (tnx: {}) => {
+  const result = await prisma.$transaction(async (tnx) => {
     await tnx.user.create({
       data: {
         email: payload.email,
-        password: hashedPassword,
+        password: hashPassword,
       },
     });
 
@@ -21,9 +21,6 @@ const createPatient = async (payload: createPatientInput) => {
     });
   });
 
-  console.log("result", result);
-
-  console.log("hashedPassword", hashedPassword);
   return result;
 };
 
